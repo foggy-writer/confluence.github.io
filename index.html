@@ -3,180 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>High-Performance WebGL OBJ Loader</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: #0b0b0e;
-            font-family: sans-serif;
-            user-select: none;
-        }
-        canvas {
-            display: block;
-            width: 100vw;
-            height: 100vh;
-        }
-        #loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #ffffff;
-            font-size: 20px;
-            background: rgba(0, 0, 0, 0.85);
-            padding: 15px 30px;
-            border-radius: 8px;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            border: 1px solid #333;
-        }
-    </style>
-
-    <!-- Import Map pulls the core libraries from CDN -->
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
+    <title>Material Design Cards</title>
+    <!-- Importing Roboto font to match Material Design typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
-<body>
+<body style="margin: 0; padding: 40px 20px; background-color: #f5f5f5; font-family: 'Roboto', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh;">
 
-    <div id="loading">Loading 3D Mesh...</div>
-    <canvas id="webgl-canvas"></canvas>
-
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-        import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-
-        // --- 1. Scene Setup ---
-        const canvas = document.getElementById('webgl-canvas');
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0b0b0e);
-
-        // Camera Configuration
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
-        camera.position.set(0, 5, 15);
-
-        // Renderer Configuration
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        // --- 2. Lighting Setup ---
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-        scene.add(ambientLight);
-
-        const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        mainLight.position.set(20, 40, 30);
-        scene.add(mainLight);
-
-        const fillLight = new THREE.DirectionalLight(0x90b0ff, 0.35);
-        fillLight.position.set(-20, -10, -20);
-        scene.add(fillLight);
-
-        // --- 3. Interaction Controls (Optimized for Heavy Meshes) ---
-        const controls = new OrbitControls(camera, renderer.domElement);
+    <!-- Card Container Grid -->
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; max-width: 1200px; width: 100%;">
         
-        // Boost responsiveness by scaling up input sensitivities
-        controls.rotateSpeed = 1.8;  // Faster mesh spinning on drag
-        controls.zoomSpeed = 2.2;    // Multiplies mouse wheel step sizes to end scrolling fatigue
-        controls.panSpeed = 1.5;     // Highly responsive right-click panning
-        
-        // Remove smoothing lag to eliminate "molasses" sensation under heavy processing loads
-        controls.enableDamping = false; 
-        
-        // Safe clipping boundaries
-        controls.minDistance = 1;
-        controls.maxDistance = 1000;
+        <!-- Card 1 -->
+        <div style="width: 344px; background-color: #ffffff; border-radius: 8px; box-shadow: 0px 2px 1px -1px rgba(0,0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12); overflow: hidden; display: flex; flex-direction: column;">
+            <img src="https://picsum.photos/id/10/344/194" alt="Random Nature" style="width: 100%; height: 194px; object-fit: cover;">
+            <div style="padding: 16px;">
+                <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 500; color: rgba(0, 0, 0, 0.87);">Explore the Wild</h2>
+                <p style="margin: 0; font-size: 14px; line-height: 20px; color: rgba(0, 0, 0, 0.6); font-weight: 400;">
+                    Discover breathtaking landscapes and hidden trails tucked away from the bustling city life. Plan your next weekend getaway.
+                </p>
+            </div>
+            <div style="padding: 8px; margin-top: auto; display: flex; gap: 8px;">
+                <button style="background: none; border: none; padding: 8px 12px; color: #6200ee; font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.25px; cursor: pointer; border-radius: 4px;" onmouseover="this.style.backgroundColor='rgba(98, 0, 238, 0.04)'" onmouseout="this.style.backgroundColor='transparent'">Share</button>
+                <button style="background: none; border: none; padding: 8px 12px; color: #6200ee; font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.25px; cursor: pointer; border-radius: 4px;" onmouseover="this.style.backgroundColor='rgba(98, 0, 238, 0.04)'" onmouseout="this.style.backgroundColor='transparent'">Learn More</button>
+            </div>
+        </div>
 
-        // --- 4. OBJ Import Pipeline ---
-        const loader = new OBJLoader();
-        const loadingDiv = document.getElementById('loading');
+        <!-- Card 2 -->
+        <div style="width: 344px; background-color: #ffffff; border-radius: 8px; box-shadow: 0px 2px 1px -1px rgba(0,0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12); overflow: hidden; display: flex; flex-direction: column;">
+            <img src="https://picsum.photos/id/26/344/194" alt="Random Tech" style="width: 100%; height: 194px; object-fit: cover;">
+            <div style="padding: 16px;">
+                <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 500; color: rgba(0, 0, 0, 0.87);">Modern Workspace</h2>
+                <p style="margin: 0; font-size: 14px; line-height: 20px; color: rgba(0, 0, 0, 0.6); font-weight: 400;">
+                    Boost your daily productivity with minimal setups, ergonomic adjustments, and smart desk gadgets engineered for focus.
+                </p>
+            </div>
+            <div style="padding: 8px; margin-top: auto; display: flex; gap: 8px;">
+                <button style="background: none; border: none; padding: 8px 12px; color: #6200ee; font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.25px; cursor: pointer; border-radius: 4px;" onmouseover="this.style.backgroundColor='rgba(98, 0, 238, 0.04)'" onmouseout="this.style.backgroundColor='transparent'">Read</button>
+                <button style="background: none; border: none; padding: 8px 12px; color: #6200ee; font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.25px; cursor: pointer; border-radius: 4px;" onmouseover="this.style.backgroundColor='rgba(98, 0, 238, 0.04)'" onmouseout="this.style.backgroundColor='transparent'">Bookmark</button>
+            </div>
+        </div>
 
-        // IMPORTANT: Change "model.obj" to match the path of your asset file
-        loader.load(
-            'model.obj', 
-            (obj) => {
-                // Apply a highly efficient default material across all sub-meshes
-                obj.traverse((child) => {
-                    if (child.isMesh) {
-                        child.material = new THREE.MeshStandardMaterial({
-                            color: 0x8c8c9c,
-                            roughness: 0.4,
-                            metalness: 0.1,
-                            side: THREE.DoubleSide // Renders internal geometry facets if needed
-                        });
-                    }
-                });
+        <!-- Card 3 -->
+        <div style="width: 344px; background-color: #ffffff; border-radius: 8px; box-shadow: 0px 2px 1px -1px rgba(0,0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12); overflow: hidden; display: flex; flex-direction: column;">
+            <img src="https://picsum.photos/id/42/344/194" alt="Random Cafe" style="width: 100%; height: 194px; object-fit: cover;">
+            <div style="padding: 16px;">
+                <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 500; color: rgba(0, 0, 0, 0.87);">Artisan Coffee</h2>
+                <p style="margin: 0; font-size: 14px; line-height: 20px; color: rgba(0, 0, 0, 0.6); font-weight: 400;">
+                    Sip into perfection with ethically sourced beans, masterfully roasted and brewed to elevate your morning ritual.
+                </p>
+            </div>
+            <div style="padding: 8px; margin-top: auto; display: flex; gap: 8px;">
+                <button style="background: none; border: none; padding: 8px 12px; color: #6200ee; font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.25px; cursor: pointer; border-radius: 4px;" onmouseover="this.style.backgroundColor='rgba(98, 0, 238, 0.04)'" onmouseout="this.style.backgroundColor='transparent'">Order Now</button>
+                <button style="background: none; border: none; padding: 8px 12px; color: #333333; font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.25px; cursor: pointer; border-radius: 4px;" onmouseover="this.style.backgroundColor='rgba(0, 0, 0, 0.04)'" onmouseout="this.style.backgroundColor='transparent'">Find Cafe</button>
+            </div>
+        </div>
 
-                // Auto-fit, center, and normalize object positioning boundaries
-                const box = new THREE.Box3().setFromObject(obj);
-                const size = box.getSize(new THREE.Vector3());
-                const center = box.getCenter(new THREE.Vector3());
-                
-                obj.position.x += (obj.position.x - center.x);
-                obj.position.y += (obj.position.y - center.y);
-                obj.position.z += (obj.position.z - center.z);
-                
-                scene.add(obj);
+    </div>
 
-                // PERFORMANCE BOOST FOR STATIC MODELS:
-                // Prevents the engine from re-calculating the internal matrix tree of millions of vertices on every tick
-                obj.matrixAutoUpdate = false;
-                obj.updateMatrix();
-
-                // Dynamically re-adjust camera and control focal points to frame the file size perfectly
-                const maxDim = Math.max(size.x, size.y, size.z);
-                const fov = camera.fov * (Math.PI / 180);
-                let cameraZ = Math.abs(maxDim / 4 * Math.tan(fov * 2)) * 2.5;
-                
-                camera.position.set(maxDim, maxDim * 0.6, cameraZ || 15);
-                controls.target.set(0, 0, 0);
-                controls.update();
-
-                // Hide loader window
-                loadingDiv.style.opacity = '0';
-            },
-            (xhr) => {
-                if (xhr.total > 0) {
-                    const percent = Math.round((xhr.loaded / xhr.total) * 100);
-                    loadingDiv.innerText = `Parsing Heavy Mesh: ${percent}%`;
-                } else {
-                    // Fallback string if content length headers are missing on local networks
-                    loadingDiv.innerText = "Parsing text coordinates into GPU buffers...";
-                }
-            },
-            (error) => {
-                console.error('An error occurred loading the OBJ mesh:', error);
-                loadingDiv.innerText = 'Failed to load model file.';
-                loadingDiv.style.background = 'rgba(200, 0, 0, 0.85)';
-            }
-        );
-
-        // --- 5. Responsive Resizing ---
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        // --- 6. Render Loop ---
-        function animate() {
-            requestAnimationFrame(animate);
-            
-            // OrbitControls target monitoring update
-            controls.update(); 
-            
-            renderer.render(scene, camera);
-        }
-        
-        animate();
-    </script>
 </body>
 </html>
